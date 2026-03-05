@@ -46,6 +46,9 @@ public class UserService {
         }
         return userRepository.findAll();
     }
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
 
     @Transactional // Fontos, mert több entitást mentünk egyszerre!
     public void simulateNewUser() {
@@ -79,14 +82,41 @@ public class UserService {
     }
 
     @Transactional
-    public void addIconToDevice(String userId, String iconName) {
+    public void addIconToUser(String userId, String iconName) {
         User user = userRepository.findById(userId).orElseThrow();
-        // Veszünk egy eszközt a felhasználótól
         if (!user.getDevices().isEmpty()) {
-            Icon newIcon = new Icon();
-            newIcon.setId(UUID.randomUUID().toString());
-            newIcon.setIconName(iconName);
-            user.getDevices().get(0).getMainMenu().getIcons().add(newIcon);
+            Icon icon = new Icon();
+            icon.setId(UUID.randomUUID().toString());
+            icon.setIconName(iconName);
+            user.getDevices().getFirst().getMainMenu().getIcons().add(icon);
+            userRepository.save(user);
+        }
+    }
+
+    @Transactional
+    public void updateUserName(String id, String newName) {
+        User user = userRepository.findById(id).orElseThrow();
+        user.setName(newName);
+        userRepository.save(user); // Módosítás
+    }
+
+    @Transactional
+    public void updateTheme(String userId, String themeName, String wallpaper) {
+        User user = userRepository.findById(userId).orElseThrow();
+        if (!user.getDevices().isEmpty()) {
+            Menu menu = user.getDevices().get(0).getMainMenu();
+            menu.setTitle(themeName);      // Ez az "arculatváltás"
+            menu.setWallpaperName(wallpaper); // Ez a "háttérkép kiválasztása"
+            userRepository.save(user);
+        }
+    }
+
+    @Transactional
+    public void deleteIcon(String userId, String iconId) {
+        User user = userRepository.findById(userId).orElseThrow();
+        if (!user.getDevices().isEmpty()) {
+            user.getDevices().getFirst().getMainMenu().getIcons()
+                    .removeIf(icon -> icon.getId().equals(iconId));
             userRepository.save(user);
         }
     }

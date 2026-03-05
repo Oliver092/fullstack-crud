@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 public class WebController {
@@ -16,7 +18,13 @@ public class WebController {
 
     @GetMapping("/")
     public String index(@RequestParam(required = false) String keyword, Model model) {
-        model.addAttribute("users", userService.searchUsers(keyword));
+        List<User> users;
+        if (keyword == null || keyword.isEmpty()) {
+            users = userService.getAllUsers();
+        } else {
+            users = userService.searchUsers(keyword);
+        }
+        model.addAttribute("users", users);
         model.addAttribute("keyword", keyword);
         return "index";
     }
@@ -36,6 +44,30 @@ public class WebController {
     @PostMapping("/delete-user/{id}")
     public String deleteUser(@PathVariable String id) {
         userService.deleteUser(id);
+        return "redirect:/";
+    }
+
+    @PostMapping("/update-user/{id}")
+    public String updateUserName(@PathVariable String id, @RequestParam String newName) {
+        userService.updateUserName(id, newName);
+        return "redirect:/";
+    }
+
+    @PostMapping("/add-icon/{id}")
+    public String addIcon(@PathVariable String id, @RequestParam String iconName) {
+        userService.addIconToUser(id, iconName);
+        return "redirect:/";
+    }
+
+    @PostMapping("/update-theme/{id}")
+    public String updateTheme(@PathVariable String id, @RequestParam String theme, @RequestParam String wallpaper) {
+        userService.updateTheme(id, theme, wallpaper);
+        return "redirect:/";
+    }
+
+    @PostMapping("/delete-icon/{userId}/{iconId}")
+    public String deleteIcon(@PathVariable String userId, @PathVariable String iconId) {
+        userService.deleteIcon(userId, iconId);
         return "redirect:/";
     }
 }
