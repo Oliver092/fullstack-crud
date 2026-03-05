@@ -1,5 +1,5 @@
 Családi Eszközkezelő Szimuláció (Spring Boot Task)
-Ez a projekt egy többszintű (N-tier) architektúrára épülő Spring Boot alkalmazás, 
+Ez a projekt egy többszintű (N-tier) architektúrára épülő Spring Boot alkalmazás,
 amely felhasználók, intelligens eszközök és azok menürendszerének kezelését mutatja be.
 
 Alkalmazott Technológiák
@@ -20,7 +20,7 @@ Maven (Dependency management)
 Projekt Felépítése
 Az alkalmazás követi a modern szoftverfejlesztési alapelveket:
 
-Entity Layer: JPA annotációkkal ellátott POJO osztályok (User, Device, Menu, Icon, Application), 
+Entity Layer: JPA annotációkkal ellátott POJO osztályok (User, Device, Menu, Icon, Application),
 amelyek leképezik az adatbázis sémát.
 
 Repository Layer: Spring Data JPA interfészek az adatkezeléshez (pl. findByNameContainingIgnoreCase szűréshez).
@@ -36,34 +36,36 @@ Dinamikus Dashboard: A főoldalon listázva látható minden felhasználó, az e
 
 Interaktív Szimuláció:
 
-Új családtag hozzáadása: Egy gombnyomásra a rendszer legenerál egy új entitás-hálót 
+Új családtag hozzáadása: Egy gombnyomásra a rendszer legenerál egy új entitás-hálót
 (User -> Device -> Menu -> Icon) és perzisztálja az adatbázisba.
 
 Keresés: Szerveroldali szűrés név alapján, kis- és nagybetű érzéketlenül.
 
 Adatbázis betekintő: Beépített H2 konzol az adatok közvetlen ellenőrzéséhez.
 
-
 ### Megvalósított Funkciók (Fullstack elvárások szerint):
+
 * **User Management**: Felhasználók létrehozása (manuális és szimulált), átnevezése (módosítás) és törlése.
 * **Menu & Icon System**: Minden eszközhöz egyedi főmenü tartozik, amely dinamikusan kezel almenüket (ikonokat).
 * **Icon CRUD**: Új ikonok hozzáadása, listázása és törlése eszközönként.
 * **App Execution**: Az alkalmazás elindítása funkció szimulálása (Frontend eseménykezelővel).
 * **Customization**: Háttérkép választása és arculatváltás (Menu title módosítás) támogatott.
 * **Database**: H2 in-memory adatbázis, Hibernate sémagenerálással.
-
+  
 Futtatás
-Clone-ozd a repository-t.
 
-Futtasd a Maven parancsot: mvn spring-boot:run
+Klónozás vagy kicsomagolás: git clone https://github.com/Oliver092/fullstack-crud vagy a csatolt ZIP kibontása.
 
-Nyisd meg a böngészőben: http://localhost:8080
+Indítás:
 
-H2 Konzole elérése
-URL: http://localhost:8080/h2-console
+Linux/Mac: ./mvnw spring-boot:run
+
+Böngésző: http://localhost:8080
+
+H2 Konzol
 
 JDBC URL: jdbc:h2:mem:testdb
 
 User: sa
 
-Password: password (vagy üres, application.properties szerint)
+Password: password (Az application.properties szerint kötelező megadni)
