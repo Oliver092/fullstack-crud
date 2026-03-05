@@ -24,10 +24,17 @@ import java.util.List;
 public class Menu {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id", nullable = false, unique = true, updatable = false)
     private String id;
 
+    @Column(name = "title")
     private String title;
+
+    @Column(name = "wallpaper_name")
     private String wallpaperName;
+
+    @Column(name = "theme_name")
     private String themeName;
 
     @OneToMany(cascade = CascadeType.ALL)

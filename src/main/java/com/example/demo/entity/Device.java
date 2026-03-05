@@ -10,7 +10,9 @@ import lombok.Setter;
 public class Device {
 
     @Id
-    private String id; // Itt is töröld a @GeneratedValue-t!
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id", nullable = false, unique = true, updatable = false)
+    private String id;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -19,7 +21,7 @@ public class Device {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne(cascade = CascadeType.ALL) // Egy eszköznek egy saját főmenüje van
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "menu_id")
     private Menu mainMenu;
 }

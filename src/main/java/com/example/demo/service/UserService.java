@@ -22,16 +22,13 @@ public class UserService {
     @Transactional
     public User registerFullUser(UserRegistrationForm form) {
         User user = new User();
-        user.setId(UUID.randomUUID().toString());
         user.setName(form.getUserName());
 
         Menu menu = new Menu();
-        menu.setId(UUID.randomUUID().toString());
         menu.setTitle(form.getMenuTitle());
         menu.setWallpaperName(form.getWallpaperName());
 
         Device device = new Device();
-        device.setId(UUID.randomUUID().toString());
         device.setName(form.getDeviceName());
         device.setUser(user);
         device.setMainMenu(menu);
@@ -40,35 +37,32 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public List<User> searchUsers(String keyword) {
-        if (keyword != null && !keyword.isEmpty()) {
-            return userRepository.findByNameContainingIgnoreCase(keyword);
+    public List<User> searchUsers(String name) {
+        if (name != null && !name.isEmpty()) {
+            return userRepository.findByNameContainingIgnoreCase(name);
         }
         return userRepository.findAll();
     }
+
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    @Transactional // Fontos, mert több entitást mentünk egyszerre!
+    @Transactional
     public void simulateNewUser() {
         User mom = new User();
-        mom.setId(UUID.randomUUID().toString());
         mom.setName("Édesanya");
 
         Menu momMenu = new Menu();
-        momMenu.setId(UUID.randomUUID().toString());
         momMenu.setTitle("Anyu Menüje");
         momMenu.setWallpaperName("Családi fotó");
 
         Device momPhone = new Device();
-        momPhone.setId(UUID.randomUUID().toString());
         momPhone.setName("Mom's iPhone");
         momPhone.setUser(mom);
         momPhone.setMainMenu(momMenu);
 
         Icon snakeIcon = new Icon();
-        snakeIcon.setId(UUID.randomUUID().toString());
         snakeIcon.setIconName("Snake Játék");
 
         momMenu.getIcons().add(snakeIcon);
@@ -86,7 +80,6 @@ public class UserService {
         User user = userRepository.findById(userId).orElseThrow();
         if (!user.getDevices().isEmpty()) {
             Icon icon = new Icon();
-            icon.setId(UUID.randomUUID().toString());
             icon.setIconName(iconName);
             user.getDevices().getFirst().getMainMenu().getIcons().add(icon);
             userRepository.save(user);
@@ -97,7 +90,7 @@ public class UserService {
     public void updateUserName(String id, String newName) {
         User user = userRepository.findById(id).orElseThrow();
         user.setName(newName);
-        userRepository.save(user); // Módosítás
+        userRepository.save(user);
     }
 
     @Transactional
@@ -105,8 +98,8 @@ public class UserService {
         User user = userRepository.findById(userId).orElseThrow();
         if (!user.getDevices().isEmpty()) {
             Menu menu = user.getDevices().get(0).getMainMenu();
-            menu.setTitle(themeName);      // Ez az "arculatváltás"
-            menu.setWallpaperName(wallpaper); // Ez a "háttérkép kiválasztása"
+            menu.setTitle(themeName);
+            menu.setWallpaperName(wallpaper);
             userRepository.save(user);
         }
     }
