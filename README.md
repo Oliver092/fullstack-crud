@@ -1,0 +1,62 @@
+Családi Eszközkezelő Szimuláció (Spring Boot Task)
+Ez a projekt egy többszintű (N-tier) architektúrára épülő Spring Boot alkalmazás, 
+amely felhasználók, intelligens eszközök és azok menürendszerének kezelését mutatja be.
+
+Alkalmazott Technológiák
+Java 21 (OpenJDK)
+
+Spring Boot 4.0.3
+
+Spring Data JPA (Hibernate 7.2.4)
+
+H2 Database (In-memory)
+
+Thymeleaf (Template Engine)
+
+Lombok (Boilerplate kód csökkentése)
+
+Maven (Dependency management)
+
+Projekt Felépítése
+Az alkalmazás követi a modern szoftverfejlesztési alapelveket:
+
+Entity Layer: JPA annotációkkal ellátott POJO osztályok (User, Device, Menu, Icon, Application), 
+amelyek leképezik az adatbázis sémát.
+
+Repository Layer: Spring Data JPA interfészek az adatkezeléshez (pl. findByNameContainingIgnoreCase szűréshez).
+
+Service Layer: Üzleti logika elkülönítése, tranzakciókezelés (@Transactional) és Constructor Injection használata.
+
+Controller Layer: Webes végpontok kezelése és a Thymeleaf view-k kiszolgálása.
+
+Funkciók:
+Automatikus inicializálás: Indításkor a DataInitializer létrehoz egy alapértelmezett felhasználót és eszközt.
+
+Dinamikus Dashboard: A főoldalon listázva látható minden felhasználó, az eszközeik és a hozzájuk tartozó menüikonok.
+
+Interaktív Szimuláció:
+
+Új családtag hozzáadása: Egy gombnyomásra a rendszer legenerál egy új entitás-hálót 
+(User -> Device -> Menu -> Icon) és perzisztálja az adatbázisba.
+
+Keresés: Szerveroldali szűrés név alapján, kis- és nagybetű érzéketlenül.
+
+Adatbázis betekintő: Beépített H2 konzol az adatok közvetlen ellenőrzéséhez.
+
+A projekt támogatja a manuális felhasználófelvételt is POST kérésen keresztül.
+
+Futtatás
+Clone-ozd a repository-t.
+
+Futtasd a Maven parancsot: mvn spring-boot:run
+
+Nyisd meg a böngészőben: http://localhost:8080
+
+H2 Konzole elérése
+URL: http://localhost:8080/h2-console
+
+JDBC URL: jdbc:h2:mem:testdb
+
+User: sa
+
+Password: password (vagy üres, application.properties szerint)

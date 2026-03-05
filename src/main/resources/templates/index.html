@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Intelligens Eszközök Kezelése</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 40px;
+            background: #f4f4f4;
+        }
+
+        .user-card {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<h1>Családi Eszközkezelő</h1>
+
+<form action="/simulate" method="post">
+    <button type="submit">Szimuláció: Új családtag hozzáadása</button>
+</form>
+
+<form action="/" method="get" style="margin-bottom: 20px;">
+    <label>
+        <input type="text" name="keyword" th:value="${keyword}" placeholder="Keresés névre..."
+               style="padding: 10px; width: 250px; border-radius: 5px; border: 1px solid #ccc;">
+    </label>
+    <button type="submit" style="background: #007bff;">Keresés</button>
+    <a href="/" style="text-decoration: none; color: #666; margin-left: 10px;">Visszaállítás</a>
+</form>
+
+<div style="background: #e9ecef; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+    <h3>Új eszköz és felhasználó regisztrálása</h3>
+    <form action="/add-user" method="post" style="display: grid; gap: 10px; max-width: 400px;">
+        <input type="text" name="userName" placeholder="Felhasználó neve" required style="padding: 8px;">
+        <input type="text" name="deviceName" placeholder="Eszköz neve (pl. iPhone 15)" required style="padding: 8px;">
+        <input type="text" name="menuTitle" placeholder="Főmenü neve" required style="padding: 8px;">
+        <input type="text" name="wallpaperName" placeholder="Háttérkép neve" style="padding: 8px;">
+
+        <button type="submit" style="background: #28a745; margin-top: 10px;">Regisztráció Mentése</button>
+    </form>
+</div>
+
+<form th:action="@{/delete-user/{id}(id=${user.id})}" method="post" style="display:inline;">
+    <button type="submit" style="background:red; padding: 5px;">Törlés</button>
+</form>
+
+<hr>
+
+<h2>Felhasználók és eszközök:</h2>
+<div th:each="user : ${users}" class="user-card">
+    <strong th:text="${user.name}">Név</strong> (ID: <span th:text="${user.id}"></span>)
+    <ul>
+        <li th:each="device : ${user.devices}">
+            Eszköz: <span th:text="${device.name}"></span>
+            | Menü: <span th:text="${device.mainMenu.title}"></span>
+            <div style="margin-left: 20px;">
+                Ikonok:
+                <span th:each="icon : ${device.mainMenu.icons}"
+                      th:text="${icon.iconName} + ' '"
+                      style="background: #eee; padding: 2px 5px; border-radius: 4px;">
+        </span>
+            </div>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
